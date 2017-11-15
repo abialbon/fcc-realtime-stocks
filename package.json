@@ -1,0 +1,28 @@
+{
+  "name": "fcc-realtime-stocks",
+  "version": "1.0.0",
+  "description": "A simple real time updating stocks charting app for FCC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abialbon/fcc-realtime-stocks.git"
+  },
+  "keywords": [
+    "Node",
+    "D3",
+    "Socket.io"
+  ],
+  "author": "Abialbon Paul",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abialbon/fcc-realtime-stocks/issues"
+  },
+  "homepage": "https://github.com/abialbon/fcc-realtime-stocks#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
+  }
+}
