@@ -15,9 +15,8 @@ const server    = app.listen(process.env.PORT, () => {
 
 // Socket Server configuration
 const io = socket(server);
-let symbols = ['AAPL', 'GE'];
+let symbols = ['AAPL', 'GE', 'MSFT'];
 io.on('connection', (socket) => {
-    console.log('A socket connection established');
     socket.emit('update', symbols);
 
     socket.on('add', (d) => {
@@ -30,8 +29,4 @@ io.on('connection', (socket) => {
         symbols.splice(i, 1);
         io.sockets.emit('update', symbols);
     });
-
-    socket.on('disconnect', () => {
-       console.log('One socket left');
-    })
 });
