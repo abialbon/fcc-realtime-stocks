@@ -23,6 +23,7 @@
   "homepage": "https://github.com/abialbon/fcc-realtime-stocks#readme",
   "dependencies": {
     "express": "^4.16.2",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.0.4",
+    "superagent": "^3.8.1"
   }
 }

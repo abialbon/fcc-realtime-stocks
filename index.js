@@ -5,6 +5,10 @@ const socket    = require('socket.io');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Routes
+const apiRoutes = require('./routes/api');
+app.use('/api', apiRoutes);
+
 const server    = app.listen(process.env.PORT, () => {
    console.log(`The server is running on: http://localhost:${process.env.PORT}`);
 });
