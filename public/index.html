@@ -8,6 +8,7 @@
     <title>Realtime Stocks</title>
     <link rel="stylesheet" href="./css/bulma.css">
     <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/company.js"></script>
     <script src="./js/socket.io.js"></script>
     <script src="./js/d3.js"></script>
 </head>
@@ -30,8 +31,9 @@
             </div>
         </div>
     </div>
-    <div class="hero">
+    <div class="hero is-info is-bold is-medium">
         <div class="hero-body">
+            <h3 class='subtitle'>Add or remove quotes to the graph realtime</h3>
             <div class="container">
                 <div class="columns">
                     <div class="column"></div>
@@ -40,6 +42,7 @@
                             <div class="field has-addons">
                                 <div class="control">
                                     <input id="symbol-input" class="input" placeholder="Symbol (e.g. MRST)">
+                                    <p class="help is-danger"></p>
                                 </div>
                                 <div class="control">
                                     <input class="button is-primary" type="submit" value="Add">
@@ -52,11 +55,8 @@
             </div>
         </div>
     </div>
-    <div id="symbols" class="section">
-        <!--<div class="symbol box">-->
-            <!--<h3>GOOGL</h3>-->
-        <!--</div>-->
-    </div>
+    <!--Symbols list area-->
+    <div id="symbols" class="section"></div>
     <script src="./js/script.js"></script>
 </body>
 </html>

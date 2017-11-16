@@ -1,8 +1,8 @@
 node_modules/
 .idea/
-.DS_Store
 *.xml
 data/
+.DS_Store
 public/.DS_Store
-*.DS_Store
+
 

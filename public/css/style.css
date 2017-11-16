@@ -1,14 +1,25 @@
+.tooltip {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    font-size: 12px;
+}
+
+.hero-body {
+    text-align: center;
+}
 
 .tick line {
     stroke: #eee;
+    stroke-dasharray: 5, 5;
 }
 
 .form {
     display: flex;
 }
 
-.y-axis .domain {
-    stroke: rgba(0, 0, 0, 0.3);
+.domain {
+    stroke: rgba(0, 0, 0, 0);
 }
 
 #symbols {
@@ -25,4 +36,17 @@
 .symbol {
     width: 30%;
     margin: 10px;
+    position: relative;
+}
+
+.delete {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+}
+
+@media (max-width: 420px) {
+    .symbol {
+        width: 96%;
+    }
 }
