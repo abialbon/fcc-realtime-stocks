@@ -12,8 +12,51 @@
     <script src="./js/d3.js"></script>
 </head>
 <body>
-    <div id="chart"></div>
-    <h1>Welcome to Realtime Stocks</h1>
+    <nav class="navbar is-primary">
+        <div class="navbar-brand">
+            <a href="" class="navbar-item title">Realtime Stocks</a>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-end">
+                <a href="#" class="navbar-item">FCC</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="section">
+        <div class="columns">
+            <div class="column">
+                <div id="chart" class="box"></div>
+            </div>
+        </div>
+    </div>
+    <div class="hero">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column">
+                        <form id="add">
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input id="symbol-input" class="input" placeholder="Symbol (e.g. MRST)">
+                                </div>
+                                <div class="control">
+                                    <input class="button is-primary" type="submit" value="Add">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="symbols" class="section">
+        <!--<div class="symbol box">-->
+            <!--<h3>GOOGL</h3>-->
+        <!--</div>-->
+    </div>
     <script src="./js/script.js"></script>
 </body>
 </html>

@@ -1,9 +1,10 @@
 // Making the connection
 const socket = io();
+let symbols = [];
 
 const chart = {
-    totalHeight: 600,
-    totalWidth: 800,
+    totalHeight: 400,
+    totalWidth: 600,
     margin: {
         top: 25,
         bottom: 75,
@@ -22,11 +23,28 @@ const svg = d3.select('#chart')
 
 // X-Axis
 const xScale = d3.scaleTime()
+    // .domain([0, 1])
     .range([0, chart.width]);
+
+const xAxis = d3.axisBottom().scale(xScale);
+svg.append('g')
+    .classed('x-axis', true)
+    .attr('transform', `translate(${chart.margin.left}, ${chart.margin.top + chart.height})`)
+    .call(xAxis);
 
 // Y-axis
 const yScale = d3.scaleLinear()
+    .domain([0, 1])
     .range([chart.height, 0]);
+
+const yAxis = d3.axisLeft()
+    .scale(yScale)
+    .tickSize(-chart.width);
+svg
+    .append('g')
+    .classed('y-axis', true)
+    .attr('transform', `translate(${chart.margin.left}, ${chart.margin.top})`)
+    .call(yAxis);
 
 // Color Scale
 const colorScale = d3.scaleOrdinal()
@@ -38,6 +56,29 @@ const line = d3.line()
     .x(d => xScale(Date.parse(d.date)))
     .y(d => yScale(d.close));
 
+svg.append('g')
+    .classed('lines', true)
+
+// Socket configuration
+socket.on('update', function(symbolList) {
+    symbols = symbolList;
+    prepareData(symbolList)
+        .then(data => drawGraph(data));
+});
+
+d3.select('#add')
+    .on('submit', () => {
+       d3.event.preventDefault();
+       const s = d3.select('#symbol-input').property('value');
+       if (symbols.indexOf(s) !== -1) {
+           // TODO: Change the alert to a modal
+           alert('This is already graphed!');
+           return;
+       }
+       socket.emit('add', s);
+    });
+
+// Function for Graph
 function prepareData(arrayOfSymbols) {
     const promisesToBeMade = arrayOfSymbols.map(x => {
         return new Promise(function(resolve, reject) {
@@ -54,53 +95,50 @@ function prepareData(arrayOfSymbols) {
     return Promise.all(promisesToBeMade)
 }
 
-prepareData(['GE', 'MSFT' , 'AAPL'])
-    .then(data => {
-        const minClose = d3.min(data, d => d3.min(d.values, x => +x.close));
-        const maxClose = d3.max(data, d => d3.max(d.values, x => +x.close));
+function drawGraph(data) {
 
-        const minDate = d3.min(data, d => d3.min(d.values, x => Date.parse(x.date)));
-        const maxDate = d3.max(data, d => d3.max(d.values, x => Date.parse(x.date)));
+    const minClose = d3.min(data, d => d3.min(d.values, x => +x.close));
+    const maxClose = d3.max(data, d => d3.max(d.values, x => +x.close));
 
-        xScale
-            .domain([minDate, maxDate])
-            .nice(10);
+    const minDate = d3.min(data, d => d3.min(d.values, x => Date.parse(x.date)));
+    const maxDate = d3.max(data, d => d3.max(d.values, x => Date.parse(x.date)));
 
-        yScale
-            .domain([minClose, maxClose]);
+    xScale
+        .domain([minDate, maxDate]);
 
-        colorScale
-            .domain(data.map(x => x.id));
+    yScale
+        .domain([minClose, maxClose]);
 
-        // Y - axis
-        const yAxis = d3.axisLeft().scale(yScale);
-        svg
-            .append('g')
-            .attr('transform', `translate(${chart.margin.left}, ${chart.margin.top})`)
-            .call(yAxis);
+    colorScale
+        .domain(data.map(x => x.id));
 
-        // X-axis
-        const xAxis = d3.axisBottom().scale(xScale);
-        svg.append('g')
-            .attr('transform', `translate(${chart.margin.left}, ${chart.margin.top + chart.height})`)
-            .call(xAxis);
+    // Y - axis
+    const yAxis = d3.axisLeft()
+        .scale(yScale)
+        .tickSize(-chart.width);
 
-        const plots = svg.append('g')
-            .classed('lines', true)
-            .selectAll('path')
-            .data(data);
+    d3.select('.y-axis')
+        .call(yAxis);
 
-        plots
-            .exit().remove();
+    // X-axis
+    const xAxis = d3.axisBottom().scale(xScale);
+    d3.select('x-axis')
+        .call(xAxis);
 
-        plots
-            .enter()
-            .append('path')
-            .merge(plots)
-            .attr('transform', `translate(${chart.margin.left}, ${chart.margin.top})`)
-            .attr('stroke', d => colorScale(d.id))
-            .attr('fill', 'none')
-            .attr('d', d => line(d.values))
+    const plots = d3.select('.lines')
+        .selectAll('path')
+        .data(data, d => d.id);
 
-    });
+    plots
+        .exit().remove();
 
+    plots
+        .enter()
+        .append('path')
+        .merge(plots)
+        .attr('transform', `translate(${chart.margin.left}, ${chart.margin.top})`)
+        .attr('stroke', d => colorScale(d.id))
+        .attr('fill', 'none')
+        .attr('d', d => line(d.values))
+
+}
