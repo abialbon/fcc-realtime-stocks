@@ -23,28 +23,28 @@ const svg = d3.select('#chart')
 
 // X-Axis
 const xScale = d3.scaleTime()
-    // .domain([0, 1])
     .range([0, chart.width]);
 
 const xAxis = d3.axisBottom().scale(xScale);
 svg.append('g')
     .classed('x-axis', true)
     .attr('transform', `translate(${chart.margin.left}, ${chart.margin.top + chart.height})`)
-    .call(xAxis);
+    // .call(xAxis);
 
 // Y-axis
 const yScale = d3.scaleLinear()
-    .domain([0, 1])
+    // .domain([0, 1])
     .range([chart.height, 0]);
 
 const yAxis = d3.axisLeft()
     .scale(yScale)
     .tickSize(-chart.width);
+
 svg
     .append('g')
     .classed('y-axis', true)
     .attr('transform', `translate(${chart.margin.left}, ${chart.margin.top})`)
-    .call(yAxis);
+    // .call(yAxis);
 
 // Color Scale
 const colorScale = d3.scaleOrdinal()
@@ -121,8 +121,10 @@ function drawGraph(data) {
         .call(yAxis);
 
     // X-axis
-    const xAxis = d3.axisBottom().scale(xScale);
-    d3.select('x-axis')
+    const xAxis = d3.axisBottom().scale(xScale)
+        .ticks(5);
+
+    d3.select('.x-axis')
         .call(xAxis);
 
     const plots = d3.select('.lines')
